@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="style.css"> !-->
+    <title>Deutsche Bahn Zeitrechner</title>
+</head>
+<body>
+  <style>
+    html {
+      height: 100%;
+      width: 100%;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background-color: #000;
+        
+    }
+
+    .container {
+        transform: translateX(-35px);
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0px;
+        display: flex;
+        background-color: transparent;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 20px;
+      
+    }
+
+
+    .headline {
+        font-size: 3em;
+        font-weight: bold;
+        margin-top: 30px;
+        margin-bottom: 12vh;
+        color: #fff;
+        text-align: center;
+      
+    }
+
+    .rectanglee {
+        z-index: 20;
+        width: 250px;
+        height: 175px;
+        max-height: 175px;
+        min-width: 250px;
+        max-width: 250px;
+        background-color: #1f1f1f;
+        margin: 0px;
+        padding: 10px;
+        text-align: center;
+        color: #ff0000;
+        border-radius: 10px;
+        border-color: #ff0000;
+        border-width: 3px;
+        border-style: solid;
+    }
+
+    input {
+       width: 100%;
+       padding: 10px;
+       border: 2px solid #ff0000; 
+       border-radius: 5px; 
+       box-sizing: border-box;
+       font-size: 16px;
+       margin-bottom: 10px;
+       background-color: #1f1f1f;
+       color: #fff;
+    }
+
+    input:focus {
+        outline: none; 
+        border-color: #ff6666; 
+        box-shadow: 0 0 5px rgba(255, 0, 0, 0.5); 
+    }
+
+    .small-text {
+        font-size: 15px;
+        color: #fff;
+    }
+
+
+
+
+
+
+
+    .rectangle {
+
+          max-height: 150px;
+          min-height: 150px;
+          width: 250px;
+          min-width: 270px;
+          max-width: 270px;
+          height: 200px;
+          background-color: #1f1f1f;
+          margin-top: 30px;
+          margin-bottom: 30px;
+
+          text-align: center;
+          color: #ff0000;
+          border-radius: 10px;
+          border-color: #ff0000;
+          border-width: 3px;
+          border-style: solid;
+          /*overflow-y: hidden;*/
+      }
+    .rectangle:first-child {
+
+        max-height: 150px;
+        min-height: 150px;
+        width: 250px;
+        min-width: 270px;
+        max-width: 270px;
+        height: 200px;
+        background-color: #1f1f1f;
+        margin-top: 30px;
+        margin-bottom: 30px;
+
+        text-align: center;
+        color: #ff0000;
+        border-radius: 10px;
+        border-color: #00ff00;
+        border-width: 3px;
+        border-style: solid;
+        /*overflow-y: hidden;*/
+    }
+
+
+
+      .rectangle h2 {
+
+
+
+        color: #ff0000;
+        font-family: Arial;
+        font-style: bold;
+        font-size: 40px;
+        margin-top: 0px;
+        margin-bottom: 10px;
+      }
+
+      .rectangle h3 {
+        color: #fff;
+        font-size: 20px;
+        font-family: sans-serif;
+        letter-spacing: 1px;
+        margin-bottom: 0px;
+        margin-left: 5px;
+        margin-right: 5px;
+      }
+
+    .overlay {
+      
+      top:  50vh;
+      left: 50vw;
+      background-color: transparent;
+      max-height: 157px;
+      overflow: hidden;
+
+    }
+
+    .containere {
+      z-index: 5;
+      margin-left: 0;
+      padding: 0;
+      background-color: transparent;
+      transform: translateY(-30px);
+      transition: all 1.5s ease-out;
+    }
+
+    button {
+      justify-content: center;
+      z-index: 10;
+      background-color: #fff;
+      color: #000000;
+      border-radius: 100px;
+      padding: 10px 20px;
+      margin-left: 10px;
+      margin-right: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 10px;
+      cursor: pointer;
+      transition: all 0.5s ease;
+      border-color: #ff0000;
+      border-width: 3px;
+      border-style: solid;
+
+    }
+
+    button:hover
+    {
+      z-index: 10;
+      color: #fff;
+      background-color: #ff0000;
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-left: 10px;
+      margin-right: 10px;
+      scale: 1.1;
+
+      cursor: pointer;
+      transition: all 0.5s ease;
+      border-color: #ff0000;
+      border-width: 3px;
+      border-style: solid;
+      
+
+    }
+
+    .buttondiv {
+      margin: 40px auto;
+      width: max-content;
+      
+    }
+
+    #green {
+      color: #00ff00;
+      font-family: Arial;
+      font-style: bold;
+      font-size: 40px;
+      margin-top: 0px;
+      margin-bottom: 10px;
+    }
+  </style>
+  <div class="headline">Wie lange dauert die Fahrt mit der DB?</div>
+  <div class="buttondiv"><button onclick="Roll()">Berechnen</button></div>
+  
+    <div class="container">
+
+        <div class="rectanglee">
+            <input type="text" placeholder="Startbahnhof">
+            <div class="small-text">Hier den Name des Bahnhofes oder des Ortes eingeben, von dem aus die Reise startet.</div>
+        </div>
+
+        <div class="rectanglee">
+            <input type="text" placeholder="Zielbahnhof">
+            <div class="small-text">Hier den Name des Bahnhofes oder des Ortes eingeben, an dem aus die Reise endet.</div>
+        </div>
+
+        <div class="rectanglee">
+            <input type="text" placeholder="Zeit laut DB-Navigator">
+            <div class="small-text">Hier die Gesamntfahrzeit, welche vom DB-Navigator angegegebn wird eingeben.</div>
+        </div>
+
+      <div class="overlay">
+        <div class="containere">
+          <div class="rectangle">
+              <h3>Keine Verspätung</h2>
+              <h2 id="green">+0 min</h2>
+          </div>
+        <div class="rectangle">
+            <h3>Bestriebstörung</h2>
+            <h2>+1 min</h2>
+        </div>
+      <div class="rectangle">
+          <h3>Verspätung aus vorheriger Fahrt</h2>
+          <h2>+1 min</h2>
+      </div>
+      <div class="rectangle">
+          <h3>Bestriebstörung</h2>
+          <h2>+1 min</h2>
+      </div>
+      <div class="rectangle">
+          <h3>Verspätetes Personal</h2>
+          <h2>+1 min</h2>
+      </div><div class="rectangle">
+          <h3>Behördliche Maßnahme</h2>
+          <h2>+1 min</h2>
+      </div>
+      <div class="rectangle">
+          <h3>Personenschaden</h2>
+          <h2>+240 min</h2>
+      </div>
+      <div class="rectangle">
+        <h3>Verlängerte Ein- und Austiegszeiten</h2>
+        <h2>+240 min</h2>
+      </div>
+      <div class="rectangle">
+        <h3>Personenschaden</h2>
+        <h2>+240 min</h2>
+      </div>
+      <div class="rectangle">
+        <h3>Personenschaden</h2>
+        <h2>+240 min</h2>
+      </div>
+      <div class="rectangle">
+        <h3>Personenschaden</h2>
+        <h2>+240 min</h2>
+      </div>
+      </div>
+      </div>
+      <div class="overlay">
+        <div class="containere">
+          <div class="rectangle">
+              <h3>Keine Verspätung</h2>
+              <h2 id="green">+0 min</h2>
+          </div>
+        <div class="rectangle">
+            <h3>Bestriebstörung</h2>
+            <h2>+1 min</h2>
+        </div>
+      <div class="rectangle">
+          <h3>Verspätung aus vorheriger Fahrt</h2>
+          <h2>+1 min</h2>
+      </div>
+      <div class="rectangle">
+          <h3>Bestriebstörung</h2>
+          <h2>+1 min</h2>
+      </div>
+      <div class="rectangle">
+          <h3>Verspätetes Personal</h2>
+          <h2>+1 min</h2>
+      </div><div class="rectangle">
+          <h3>Behördliche Maßnahme</h2>
+          <h2>+1 min</h2>
+      </div>
+      <div class="rectangle">
+          <h3>Personenschaden</h2>
+          <h2>+240 min</h2>
+      </div>
+      <div class="rectangle">
+        <h3>Verlängerte Ein- und Austiegszeiten</h2>
+        <h2>+240 min</h2>
+      </div>
+      <div class="rectangle">
+        <h3>Personenschaden</h2>
+        <h2>+240 min</h2>
+      </div>
+      <div class="rectangle">
+        <h3>Personenschaden</h2>
+        <h2>+240 min</h2>
+      </div>
+      <div class="rectangle">
+        <h3>Personenschaden</h2>
+        <h2>+240 min</h2>
+      </div>
+      </div>
+      </div>
+      <div class="overlay">
+        
+        <div class="containere">
+          <div class="rectangle">
+              <h3>Keine Verspätung</h2>
+              <h2 id="green">+0 min</h2>
+          </div>
+        <div class="rectangle">
+            <h3>Bestriebstörung</h2>
+            <h2>+1 min</h2>
+        </div>
+      <div class="rectangle">
+          <h3>Verspätung aus vorheriger Fahrt</h2>
+          <h2>+1 min</h2>
+      </div>
+      <div class="rectangle">
+          <h3>Bestriebstörung</h2>
+          <h2>+1 min</h2>
+      </div>
+      <div class="rectangle">
+          <h3>Verspätetes Personal</h2>
+          <h2>+1 min</h2>
+      </div><div class="rectangle">
+          <h3>Behördliche Maßnahme</h2>
+          <h2>+1 min</h2>
+      </div>
+      <div class="rectangle">
+          <h3>Personenschaden</h2>
+          <h2>+240 min</h2>
+      </div>
+      <div class="rectangle">
+        <h3>Verlängerte Ein- und Austiegszeiten</h2>
+        <h2>+240 min</h2>
+      </div>
+      <div class="rectangle">
+        <h3>Personenschaden</h2>
+        <h2>+240 min</h2>
+      </div>
+      <div class="rectangle">
+        <h3>Personenschaden</h2>
+        <h2>+240 min</h2>
+      </div>
+      <div class="rectangle">
+        <h3>Personenschaden</h2>
+        <h2>+240 min</h2>
+      </div>
+      </div>
+      </div>
+
+
+
+
+      
+    </div>
+
+
+
+
+  
+
+
+
+
+  <script>
+
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+      function Roll() {
+        for(let i = 0; i < 3; i++){  
+        
+        var balls = document.getElementsByClassName("containere")[i];
+
+          var numba = getRandomInt(1, 10);
+          let balla = 30 + numba * 186;
+          balls.style.transform = 'translateY(-'+balla+'px)';
+        }
+      }
+  </script>
+
+
+
+
+  
+  
+  
+</body>
+</html>
